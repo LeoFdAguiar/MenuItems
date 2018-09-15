@@ -1,17 +1,18 @@
 public class MenuButton{
     float x, y, w, h, scale, aWidth, speed, c1Width, c2Width, rect1X;
-    int scene;
+    int scene, currentScene;
     color primary, secondary;
     String text;
     boolean clicked, hovered, animationFinished;
     
-    public MenuButton(float x, float y, float scale, String text, int scene){
+    public MenuButton(float x, float y, float scale, String text, int scene, int currentScene){
         this.x = x;
         this.y = y;
         this.aWidth = 0;
         this.c1Width = 0;
         this.c2Width = 0;
         this.scene = scene;
+        this.currentScene = currentScene;
         this.text = text;
         this.scale = scale;
         this.speed = 12 * scale;
@@ -48,10 +49,10 @@ public class MenuButton{
         }
     }
     
-    public void setClicked(){
+    public void setClicked(int s){
         c1Width = 0;
         c2Width = 0;
-        if (isHovered()){
+        if (isHovered() && s == currentScene){
             clicked =  true;
             rect1X = mouseX;
         }
@@ -61,7 +62,9 @@ public class MenuButton{
         if (animationFinished){
             c1Width = 0;
             c2Width = 0;
+            aWidth = 0;
             animationFinished = false;
+            clicked = false;
             return scene;
         }
         else
@@ -73,12 +76,6 @@ public class MenuButton{
         float rect1Speed = ((w - (rect1X - (x - w/2))) / w) * speed;
         float maxRect1 = w - (rect1X - (x - (w/2)));
         float maxRect2 = (w - maxRect1) * -1;
-        
-        if (!isHovered()){
-            c1Width = 0;
-            c2Width = 0;
-            clicked = false;
-        }
         
         if (clicked){ 
             if (rect1X + c1Width < (x - (w/2)) + w){

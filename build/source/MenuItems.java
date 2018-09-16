@@ -1,12 +1,103 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class MenuItems extends PApplet {
+
+MenuButton MB, MB1, back, back1;
+ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
+int scene;
+
+public void setup(){
+    
+
+    scene = 0;
+
+    MB = new MenuButton(width/2, height/2 - 50, 3, "Sample 1", 1, 0);
+    MB.setPrimary(51, 51, 51);
+    MB.setSecondary(168, 246, 255);
+
+    MB1 = new MenuButton(width/2, height/2 + 50, 3, "Sample 2", 2, 0);
+    back = new MenuButton(width/2, height/2 + 100, 2, "Back", 0, 1);
+    back1 = new MenuButton(width/2, height/2 + 100, 2, "Back", 0, 2);
+
+    buttons.add(MB);
+    buttons.add(MB1);
+    buttons.add(back);
+    buttons.add(back1);
+
+    MB1.setSecondary(248, 255, 127);
+}
+
+public void draw(){
+    changeScene();
+    switch(scene){
+        case 0:
+            scene0();
+            break;
+        case 1:
+            scene1();
+            break;
+        case 2:
+            scene2();
+            break;
+    }
+}
+
+public void scene0(){
+    background(200);
+    MB.show();
+    MB1.show();
+}
+
+public void scene1(){
+    background(51);
+    fill(255);
+    text("This is scene #1", width/2, height/2);
+    back.show();
+}
+
+public void scene2(){
+    background(51);
+    fill(255);
+    text("This is scene #2", width/2, height/2);
+    back1.show();
+}
+
+public void changeScene(){
+    for (MenuButton m : buttons){
+      int tempVal = m.getScene();
+      if (tempVal >= 0){
+        scene = tempVal;
+        break;
+      }
+    }
+}
+
+public void mousePressed(){
+    for (MenuButton m : buttons){
+      m.setClicked(scene);
+    }
+}
 public class MenuButton{
     float x, y, w, h, scale, aWidth, speed, c1Width, c2Width, rect1X;
     int scene, currentScene;
-    color primary, secondary;
+    int primary, secondary;
     String text;
     boolean clicked, hovered, animationFinished;
 
     /**
-     * Constuctor for the MenuButton class. Button is drawn from the center
+     * Constuctor for the MenuButton class.
      * @param x            X pos for the button to be displayed.
      * @param y            Y pos for the button to be displayed.
      * @param scale        Scale the buttons up (above 1) if they are too small.
@@ -135,8 +226,8 @@ public class MenuButton{
                 //Let the button know that it is done animating so it can change scenes.
                 animationFinished = true;
             }
+            
 
-            //Draw the animations.
             fill(primary);
             rectMode(CORNER);
             rect(rect1X, rect1Y, c1Width, h);
@@ -144,27 +235,14 @@ public class MenuButton{
         }
     }
 
-    /**
-     * Change the primary color of the button (RGB)
-     * @param r red
-     * @param g green
-     * @param b blue
-     */
     public void setPrimary(int r, int g, int b){
         primary = color(r, g, b);
     }
 
-    /**
-     * Change the secondary color of the button (RGB)
-     * @param r red
-     * @param g green
-     * @param b blue
-     */
     public void setSecondary(int r, int g, int b){
         secondary = color(r, g, b);
     }
 
-    //Display the button to the screen.
     public void show(){
         noStroke();
 
@@ -185,10 +263,6 @@ public class MenuButton{
         text(text, x, y + (3 * scale));
     }
 
-    /**
-     * Check to see if the mouse is hovered over the button.
-     * @return [description]
-     */
     public boolean isHovered(){
         if (mouseX > x - w/2 && mouseX < x + w/2){
             if (mouseY > y - h/2 && mouseY < y + h/2){
@@ -197,7 +271,7 @@ public class MenuButton{
                 return true;
             }
         }
-        
+
         if(hovered)
             cursor(ARROW);
 
@@ -205,4 +279,14 @@ public class MenuButton{
         return false;
     }
 
+}
+    public void settings() {  size(800, 800, P2D); }
+    static public void main(String[] passedArgs) {
+        String[] appletArgs = new String[] { "MenuItems" };
+        if (passedArgs != null) {
+          PApplet.main(concat(appletArgs, passedArgs));
+        } else {
+          PApplet.main(appletArgs);
+        }
+    }
 }

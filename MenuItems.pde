@@ -2,9 +2,12 @@ MenuButton MB, MB1, back, back1;
 ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
 int scene;
 
-void setup(){
+void settings(){
     size(800, 800, P2D);
+}
 
+void setup(){
+    
     scene = 0;
 
     //Create buttons for the sketch.
